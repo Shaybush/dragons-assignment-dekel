@@ -4,11 +4,11 @@ export const useDebouncer = (query: string, timer: number) => {
     const [value, setValue] = useState<string>(query);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        const timeoutId = setTimeout(() => {
             setValue(query)
         }, timer);
 
-        return () => clearInterval(interval)
+        return () => clearTimeout(timeoutId)
     }, [query, timer])
 
     return value

@@ -56,7 +56,7 @@ export const fetchOrdersAsync = createAsyncThunk(
 
       const response = await fetchOrders(page, sortBy, sortOrder, customerName)
       const newOrders: IOrder[] = response.orders
-
+      if (newOrders.length === 0) return response
       const isDifferent = newOrders.some(
         (newOrder) =>
           !lastFetchedOrders.some(
@@ -64,7 +64,7 @@ export const fetchOrdersAsync = createAsyncThunk(
           )
       )
 
-      return isDifferent ? response : lastFetchedOrders
+      return isDifferent ? response : { ...response, orders: lastFetchedOrders }
     } catch (error: unknown) {
       return rejectWithValue((error as { message: string }).message || "Failed to fetch orders")
     }
